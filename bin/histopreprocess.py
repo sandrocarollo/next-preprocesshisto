@@ -1,23 +1,14 @@
-import os
-import random
-from pathlib import Path
-import openslide
-from PIL import Image
-import numpy as np
-import cv2
-import matplotlib.pyplot as plt
-import IPython.display as display       
 import argparse
+import cv2  
+import numpy as np  
+import openslide
+import os
+from PIL import Image
 
 
 def main():
     # Import slide
     slide = openslide.OpenSlide(file_path)
-
-    # Define the level
-    level = 0
-
-    image = slide.read_region((0,0), level, slide.level_dimensions[level])
 
     # ----- Scaling -----
     # patch size in pixel 
@@ -148,16 +139,16 @@ def main():
 
     # Save patches in the patches folder
     for position, patch in patches_saved.items():
-        patch.save(os.path.join(main_directory, f'patches/patch_{position}.png'))
+        patch.save(os.path.join(main_directory, f'patches/patch_{position}.jpg'))
 
     # Save discarded patches in the discard folder 
     if full_saving:
         for position, patch in patches_discarded.items():
-            patch.save(os.path.join(main_directory, f'discard/discard_{position}.png'))
+            patch.save(os.path.join(main_directory, f'discard/discard_{position}.jpg'))
 
         # Save the reconstructed image in the reconstruction folder 
         reconstructed_image = Image.fromarray(reconstructed_image)
-        reconstructed_image.save(os.path.join(main_directory, 'reconstruction/reconstructed_image.png'))
+        reconstructed_image.save(os.path.join(main_directory, 'reconstruction/reconstructed_image.jpg'))
 
 
 if __name__ == "__main__":
