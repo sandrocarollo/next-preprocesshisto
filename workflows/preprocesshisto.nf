@@ -17,8 +17,8 @@ for (param in checkPathParamList) { if (param) { file(param, checkIfExists: true
 // Check mandatory parameters
 if (params.input) { ch_input = file(params.input) } else { exit 1, 'Input samplesheet not specified!' }
 
-read_img = Channel.fromPath("${params.input}/**/${params.images_paths}", type: 'file').ifEmpty { exit 1, "Cannot find any input data matching"}
-
+//read_img = Channel.fromPath("${params.input}/**/${params.images_paths}", type: 'file').ifEmpty { exit 1, "Cannot find any input data matching"}
+read_img = Channel.fromPath('/data/datasets/gdc/diagnostic_slides/COAD/70012428-8df8-4eb2-8d28-7d0b2a88d1d7/TCGA-A6-3810-01Z-00-DX1.2940ca70-013a-4bc3-ad6a-cf4d9ffa77ce.svs')
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     CONFIG FILES

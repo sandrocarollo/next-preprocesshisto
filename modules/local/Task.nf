@@ -1,16 +1,17 @@
 process TASK{
 
-   
+    publishDir "${params.outdir}"
 
     input:
         path image
 
     output:
-
+        path outputFolder
 
     script:
     """
-    histopreprocess.py \\
-        --inputimage ${image}
+    outputFolder=$(python histopreprocess.py --inputimage ${image})
+
+    echo "outputFolder=$outputFolder" > output.info
     """
 }
