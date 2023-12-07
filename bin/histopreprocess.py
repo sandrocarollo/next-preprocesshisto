@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import argparse
 import cv2  
 import numpy as np  
@@ -117,14 +119,16 @@ def main():
 
     # ----- Saving Process -----
     # Extracting name for main directory 
-    last_slash_index = file_path.rfind('/')
-    if last_slash_index != -1:
-        extracted_text = file_path[last_slash_index + 1:last_slash_index + 13]
-    else:
-        print("No '/' found in the path. Path could be not valid")
+    #last_slash_index = file_path.rfind('/')
+    #if last_slash_index != -1:
+    #    extracted_text = file_path[last_slash_index + 1:last_slash_index + 13]
+    #else:
+    #    print("No '/' found in the path. Path could be not valid")
+    extracted_text = file_path[0:12]
 
     # Main directory 
-    main_directory = extracted_text
+    outPath = './'
+    main_directory = os.path.join(outPath, extracted_text)
     os.makedirs(main_directory, exist_ok=True)
 
     # Subdirectories
@@ -139,16 +143,20 @@ def main():
 
     # Save patches in the patches folder
     for position, patch in patches_saved.items():
-        patch.save(os.path.join(main_directory, f'patches/patch_{position}.jpg'))
+        filename = "{}_{}".format(extracted_text, position)
+        patch.save(os.path.join(main_directory, 'patches', filename + ".jpg"))
+
 
     # Save discarded patches in the discard folder 
     if full_saving:
         for position, patch in patches_discarded.items():
-            patch.save(os.path.join(main_directory, f'discard/discard_{position}.jpg'))
+            filename = "{}_{}".format(extracted_text, position)
+            patch.save(os.path.join(main_directory, 'discard', filename + ".jpg"))
+
 
         # Save the reconstructed image in the reconstruction folder 
         reconstructed_image = Image.fromarray(reconstructed_image)
-        reconstructed_image.save(os.path.join(main_directory, 'reconstruction/reconstructed_image.jpg'))
+        reconstructed_image.save(os.path.join(main_directory, 'reconstruction', "reconstructed_" + extracted_text + ".jpg"))
 
 
 if __name__ == "__main__":
@@ -173,10 +181,15 @@ if __name__ == "__main__":
   parser.add_argument("-5","--full_saving", action='store_true',
                      help="Activate the full saving process",
                      required=False)
+  #parser.add_argument("-3", "--outputfoldername",
+  #                  help="Name of the output result folder",
+  #                  default="image",
+  #                  required=False)
   args = parser.parse_args()
   file_path = args.inputimage
   CannyRange = args.inputCannyValues
   white_threshold = args.inputCleaningThreshold
   patch_size_px = args.inputPatchPixelSize
   full_saving = args.full_saving
+  #mainfoldername = args.outputfoldername
   main()
