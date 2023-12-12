@@ -119,11 +119,6 @@ def main():
 
     # ----- Saving Process -----
     # Extracting name for main directory 
-    #last_slash_index = file_path.rfind('/')
-    #if last_slash_index != -1:
-    #    extracted_text = file_path[last_slash_index + 1:last_slash_index + 13]
-    #else:
-    #    print("No '/' found in the path. Path could be not valid")
     extracted_text = file_path[0:12]
 
     # Main directory 
@@ -178,18 +173,13 @@ if __name__ == "__main__":
                      help="Patch size in pixels",
                      default=512,
                      required=False)
-  parser.add_argument("-5","--full_saving", action='store_true',
+  parser.add_argument("-5","--chooseFullSaving",  action='store_true',
                      help="Activate the full saving process",
                      required=False)
-  #parser.add_argument("-3", "--outputfoldername",
-  #                  help="Name of the output result folder",
-  #                  default="image",
-  #                  required=False)
   args = parser.parse_args()
   file_path = args.inputimage
   CannyRange = args.inputCannyValues
   white_threshold = args.inputCleaningThreshold
   patch_size_px = args.inputPatchPixelSize
-  full_saving = args.full_saving
-  #mainfoldername = args.outputfoldername
+  full_saving = args.chooseFullSaving
   main()
