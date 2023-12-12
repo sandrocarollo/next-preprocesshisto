@@ -119,11 +119,6 @@ def main():
 
     # ----- Saving Process -----
     # Extracting name for main directory 
-    #last_slash_index = file_path.rfind('/')
-    #if last_slash_index != -1:
-    #    extracted_text = file_path[last_slash_index + 1:last_slash_index + 13]
-    #else:
-    #    print("No '/' found in the path. Path could be not valid")
     extracted_text = file_path[0:12]
 
     # Main directory 
@@ -162,34 +157,29 @@ def main():
 if __name__ == "__main__":
   parser = argparse.ArgumentParser(description='Histo Pre-processing',
                     formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-  parser.add_argument("-1", "--inputimage", 
+  parser.add_argument("-1", "--input_image", 
                     help="Path of the input image file",
                     default="/data/datasets/gdc/diagnostic_slides/COAD/70012428-8df8-4eb2-8d28-7d0b2a88d1d7/TCGA-A6-3810-01Z-00-DX1.2940ca70-013a-4bc3-ad6a-cf4d9ffa77ce.svs",
                     required=False)
-  parser.add_argument("-2", "--inputCannyValues", nargs=2, type=int,
+  parser.add_argument("-2", "--CannyValues", nargs=2, type=int,
                      help="Values for Canny edge detection",
                      default=[40, 100],
                      required=False)
-  parser.add_argument("-3", "--inputCleaningThreshold", type=float,
+  parser.add_argument("-3", "--CleaningThreshold", type=float,
                      help="Threshold for deleting patches with too mach whitish pixels",
                      default=0.9,
                      required=False)
-  parser.add_argument("-4", "--inputPatchPixelSize", type=int,
+  parser.add_argument("-4", "--PatchPixelSize", type=int,
                      help="Patch size in pixels",
                      default=512,
                      required=False)
-  parser.add_argument("-5","--full_saving", action='store_true',
+  parser.add_argument("-5","--apply_FullSaving",  action='store_true',
                      help="Activate the full saving process",
                      required=False)
-  #parser.add_argument("-3", "--outputfoldername",
-  #                  help="Name of the output result folder",
-  #                  default="image",
-  #                  required=False)
   args = parser.parse_args()
-  file_path = args.inputimage
-  CannyRange = args.inputCannyValues
-  white_threshold = args.inputCleaningThreshold
-  patch_size_px = args.inputPatchPixelSize
-  full_saving = args.full_saving
-  #mainfoldername = args.outputfoldername
+  file_path = args.input_image
+  CannyRange = args.CannyValues
+  white_threshold = args.CleaningThreshold
+  patch_size_px = args.PatchPixelSize
+  full_saving = args.apply_FullSaving
   main()
