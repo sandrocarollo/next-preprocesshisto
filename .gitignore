@@ -1,0 +1,9 @@
+.nextflow*
+results 
+work
+.command.*
+*.exitcode
+*.jpg
+pipeline_*
+execution_*
+*.svs

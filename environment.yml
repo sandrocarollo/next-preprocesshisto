@@ -1,0 +1,14 @@
+#   conda env create -f environment.yml
+
+name: histopreprocess
+channels:
+  - anaconda 
+  - conda-forge 
+  - defaults 
+dependencies:
+  - numpy
+  - opencv
+  - pillow=9.5.0
+  - openslide
+  - openslide-python
+  
