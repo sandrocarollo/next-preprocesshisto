@@ -1,4 +1,4 @@
-process TASK{
+process PATCHEXTRACTION{
 
     publishDir "${params.outdir}", mode: 'copy'
 
