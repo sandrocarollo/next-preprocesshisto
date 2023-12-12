@@ -157,29 +157,29 @@ def main():
 if __name__ == "__main__":
   parser = argparse.ArgumentParser(description='Histo Pre-processing',
                     formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-  parser.add_argument("-1", "--inputimage", 
+  parser.add_argument("-1", "--input_image", 
                     help="Path of the input image file",
                     default="/data/datasets/gdc/diagnostic_slides/COAD/70012428-8df8-4eb2-8d28-7d0b2a88d1d7/TCGA-A6-3810-01Z-00-DX1.2940ca70-013a-4bc3-ad6a-cf4d9ffa77ce.svs",
                     required=False)
-  parser.add_argument("-2", "--inputCannyValues", nargs=2, type=int,
+  parser.add_argument("-2", "--input_CannyValues", nargs=2, type=int,
                      help="Values for Canny edge detection",
                      default=[40, 100],
                      required=False)
-  parser.add_argument("-3", "--inputCleaningThreshold", type=float,
+  parser.add_argument("-3", "--input_CleaningThreshold", type=float,
                      help="Threshold for deleting patches with too mach whitish pixels",
                      default=0.9,
                      required=False)
-  parser.add_argument("-4", "--inputPatchPixelSize", type=int,
+  parser.add_argument("-4", "--input_PatchPixelSize", type=int,
                      help="Patch size in pixels",
                      default=512,
                      required=False)
-  parser.add_argument("-5","--chooseFullSaving",  action='store_true',
+  parser.add_argument("-5","--choose_FullSaving",  action='store_true',
                      help="Activate the full saving process",
                      required=False)
   args = parser.parse_args()
-  file_path = args.inputimage
-  CannyRange = args.inputCannyValues
-  white_threshold = args.inputCleaningThreshold
-  patch_size_px = args.inputPatchPixelSize
-  full_saving = args.chooseFullSaving
+  file_path = args.input_image
+  CannyRange = args.input_CannyValues
+  white_threshold = args.input_CleaningThreshold
+  patch_size_px = args.input_PatchPixelSize
+  full_saving = args.choose_FullSaving
   main()

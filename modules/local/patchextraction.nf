@@ -1,7 +1,7 @@
 process PATCHEXTRACTION{
 
     publishDir "${params.outdir}", mode: 'copy'
-    def chooseFullSavingArg = params.chooseFullSaving ? '--chooseFullSaving' : ''
+    def saving_choosen = params.full_saving ? '--choose_FullSaving' : ''
 
     input:
         path image
@@ -12,11 +12,11 @@ process PATCHEXTRACTION{
     script:
     """
     histopreprocess.py \\
-        --inputimage ${image} \\
-        --inputCannyValues ${params.CannyValues[0]} ${params.CannyValues[1]}\\
-        --inputCleaningThreshold ${params.CleaningThreshold} \\
-        --inputPatchPixelSize ${params.PixelSize} \\
-        ${chooseFullSavingArg}
+        --input_image ${image} \\
+        --input_CannyValues ${params.canny_values[0]} ${params.canny_values[1]}\\
+        --input_CleaningThreshold ${params.threshold_cutoff} \\
+        --input_PatchPixelSize ${params.patch_size} \\
+        ${saving_choosen}
     """
     
 }
