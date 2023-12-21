@@ -15,7 +15,6 @@ for (param in checkPathParamList) { if (param) { file(param, checkIfExists: true
 
 read_img = Channel.fromPath("${params.input}/**/${params.images_paths}").ifEmpty { exit 1, "Cannot find any input data matching"}
 
-
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     IMPORT LOCAL MODULES/SUBWORKFLOWS
@@ -23,6 +22,7 @@ read_img = Channel.fromPath("${params.input}/**/${params.images_paths}").ifEmpty
 */
 
 include { PATCHEXTRACTION } from '../modules/local/patchextraction.nf'
+include { PATCHNORMALIZATION } from '../modules/local/patchnormalization.nf'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -36,13 +36,18 @@ workflow PREPROCESSHISTO {
 
 
     //
-    // MODULE: Run Task
+    // MODULE: Run patchextraction
     //
     PATCHEXTRACTION (
         read_img
     )
 
-
+    //
+    // MODULE: Run patchnormalization
+    //
+    PATCHNORMALIZATION (
+        PATCHEXTRACTION.out
+    )
 
 }
 
