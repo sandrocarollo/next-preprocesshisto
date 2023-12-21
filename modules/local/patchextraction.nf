@@ -7,7 +7,7 @@ process PATCHEXTRACTION{
         path image
 
     output:
-        path "**" 
+        path "**"
 
     script:
     """
