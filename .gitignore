@@ -7,3 +7,5 @@ work
 pipeline_*
 execution_*
 *.svs
+normalized_result 
+bin/__pycache__

@@ -21,4 +21,5 @@ dependencies:
   - pip:
     - opencv-python==4.6.0.66 
     - slideio==1.0.3
+    - spams
 
