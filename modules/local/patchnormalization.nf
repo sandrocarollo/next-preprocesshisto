@@ -6,13 +6,12 @@ process PATCHNORMALIZATION{
         path patches
         
     output:
-        path "**" 
+        path "**"
 
     script:
     """
-    Normalize.py \\
-        -ip ${patches} \\
-        -op ${params.outdir_norm}
+    normalization.py \\
+        -ip ${patches}
     """
     
 }
