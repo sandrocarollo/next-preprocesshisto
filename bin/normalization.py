@@ -39,8 +39,7 @@ def Normalization(inputPath: Path, sampleImagePath: Path) -> None:
 
         # Saving 
         nor_img = Image.fromarray(nor_img)
-        filename = "{}_{}".format('norm', patch)
-        nor_img.save(os.path.join(main_directory,subdirectory,filename))    
+        nor_img.save(os.path.join(main_directory,subdirectory,patch))    
 
 if __name__ == '__main__':
     # Parsing all arguments from the command line
