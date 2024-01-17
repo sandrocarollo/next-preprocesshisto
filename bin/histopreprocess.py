@@ -13,8 +13,6 @@ def main():
     slide = openslide.OpenSlide(file_path)
 
     # ----- Scaling -----
-    # patch size in pixel 
-    patch_size_px = 512
     # size thumbnail
     thumb_size = (np.array(slide.dimensions)/patch_size_px).astype(int)
     # creating thumbnail of the image
@@ -82,7 +80,6 @@ def main():
         patches_saved[c_tuple] = patch
 
     # Process to delete patches with too less tissue 
-    white_threshold = 0.9  # Threshold for proportion of whitish pixels
     keys_to_delete = []
 
     for position, patch in patches_saved.items():
@@ -119,27 +116,24 @@ def main():
 
     # ----- Saving Process -----
     # Extracting name for main directory 
-    extracted_text = file_path[0:12]
+    extracted_text = file_path[:file_path.rfind('.')]
 
     # Main directory 
-    outPath = './'
+    outPath = './tiles'
     main_directory = os.path.join(outPath, extracted_text)
     os.makedirs(main_directory, exist_ok=True)
 
     # Subdirectories
-    subdirectories = ['patches']
     if full_saving:
-        subdirectories.extend(['discard', 'reconstruction'])
+        subdirectories = ['discard', 'reconstruction']
+        for folder in subdirectories:
+            subdirectory_path = os.path.join(main_directory, folder)
+            os.makedirs(subdirectory_path, exist_ok=True)
 
-    # Creation subdirectories
-    for folder in subdirectories:
-        subdirectory_path = os.path.join(main_directory, folder)
-        os.makedirs(subdirectory_path, exist_ok=True)
-
-    # Save patches in the patches folder
+    # Save patches 
     for position, patch in patches_saved.items():
         filename = "{}_{}".format(extracted_text, position)
-        patch.save(os.path.join(main_directory, 'patches', filename + ".jpg"))
+        patch.save(os.path.join(main_directory, filename + ".jpg"))
 
 
     # Save discarded patches in the discard folder 
@@ -151,16 +145,16 @@ def main():
 
         # Save the reconstructed image in the reconstruction folder 
         reconstructed_image = Image.fromarray(reconstructed_image)
-        reconstructed_image.save(os.path.join(main_directory, 'reconstruction', "reconstructed_" + extracted_text + ".jpg"))
+        reconstructed_image.save(os.path.join(main_directory, 'reconstruction', extracted_text + ".jpg"))
 
 
 if __name__ == "__main__":
   parser = argparse.ArgumentParser(description='Histo Pre-processing',
                     formatter_class=argparse.ArgumentDefaultsHelpFormatter)
   parser.add_argument("-1", "--input_image", 
-                    help="Path of the input image file",
-                    default="/data/datasets/gdc/diagnostic_slides/COAD/70012428-8df8-4eb2-8d28-7d0b2a88d1d7/TCGA-A6-3810-01Z-00-DX1.2940ca70-013a-4bc3-ad6a-cf4d9ffa77ce.svs",
-                    required=False)
+                     help="Path of the input image file",
+                     default="/data/datasets/gdc/diagnostic_slides/COAD/70012428-8df8-4eb2-8d28-7d0b2a88d1d7/TCGA-A6-3810-01Z-00-DX1.2940ca70-013a-4bc3-ad6a-cf4d9ffa77ce.svs",
+                     required=False)
   parser.add_argument("-2", "--CannyValues", nargs=2, type=int,
                      help="Values for Canny edge detection",
                      default=[40, 100],

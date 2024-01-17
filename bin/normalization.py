@@ -25,21 +25,16 @@ def Normalization(inputPath: Path, sampleImagePath: Path) -> None:
         nor_img = cv2.cvtColor(nor_img, cv2.COLOR_RGB2BGR)
 
         # Extracting name for main directory 
-        extracted_text = patch.name[0:12]
+        extracted_text = patch.name[:(str(patch).find('('))]
 
         # Main directory 
-        outPath = './'
+        outPath = './normalized_patches'
         main_directory = os.path.join(outPath, extracted_text)
         os.makedirs(main_directory, exist_ok=True)
 
-        # Subdirectory
-        subdirectory = 'norm_patches'
-        subdirectory_path = os.path.join(main_directory, subdirectory)
-        os.makedirs(subdirectory_path, exist_ok=True)
-
         # Saving 
         nor_img = Image.fromarray(nor_img)
-        nor_img.save(os.path.join(main_directory,subdirectory,patch))    
+        nor_img.save(os.path.join(main_directory,patch))    
 
 if __name__ == '__main__':
     # Parsing all arguments from the command line
