@@ -45,4 +45,4 @@ if __name__ == '__main__':
 
     # Calling the Normalization function with defined parameters
     Normalization(  args.inputPath,
-                    args.sampleImagePath if args.sampleImagePath != None else '/home/girotto/myScratch/projects/script/next-preprocesshisto/bin/normalization_template.jpg')
+                    args.sampleImagePath if args.sampleImagePath != None else './bin/normalization_template.jpg')

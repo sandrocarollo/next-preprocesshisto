@@ -1,6 +1,6 @@
 process PATCHNORMALIZATION{
     
-    publishDir "${params.outdir_norm}", mode: 'copy'
+    publishDir "${params.outdir}", mode: 'copy'
 
     input:
         path patches
