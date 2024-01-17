@@ -1,6 +1,6 @@
 ## Introduction
 
-**next-preprocesshisto** is a best-practice histopathology analysis pipeline designed to process and extract patches from H&E slides provided as input. The slides will go through a RGB thresholding and edge detection to isolate the tissue before beign tessellated into small patches for downstream analysis.
+**next-preprocesshisto** is a best-practice histopathology analysis pipeline designed to process and extract patches from H&E slides provided as input. The slides will go through a RGB thresholding and edge detection to isolate the tissue before beign tessellated into small patches. Subsequently, these patches will be normalized for downstream analysis.
 
 The pipeline is built using [Nextflow](https://www.nextflow.io), a workflow tool to run tasks across multiple compute infrastructures in a very portable manner. The [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl2.html) implementation of this pipeline uses one container per process which makes it much easier to maintain and update software dependencies.
 
@@ -8,7 +8,7 @@ The pipeline is built using [Nextflow](https://www.nextflow.io), a workflow tool
 ## Pipeline summary
 
 * **Input:** Read folder with medical images in svs format.
-* **Processing:** Utilize RGB thresholding and Canny edge detection to isolate the tissue and then to extract patches for further analysis. Furthermore, it performs a check, discarding patches that are almost completely white, i.e. that have a minimal region of tissue, therefore negligible.
+* **Processing:** The fist module utilize RGB thresholding and Canny edge detection to isolate the tissue and then to extract patches for further analysis. Furthermore, it performs a check, discarding patches that are almost completely white, i.e. that have a minimal region of tissue, therefore negligible. The second Module 
 * **Output:** Tissue-relevant patches are saved in folder `patches`. Optionally, the pipeline saves the patches not interested by the tissue, as well as the image reconstruction, in folders `discard` and `reconstruction`, respectively.
 
 ## Quick Start
@@ -38,7 +38,7 @@ The pipeline is built using [Nextflow](https://www.nextflow.io), a workflow tool
 
    Use:
    ```bash
-   nextflow run main.nf --input "path/to/data/folder" --canny_values [40, 100] --threshold_cutoff 0.9 --patch_size 512 --full_saving false --outdir './results'
+   nextflow run main.nf --input "path/to/data/folder" --canny_values 40 100 --threshold_cutoff 0.9 --patch_size 512 --full_saving false --outdir './results'
    ```
    where in the flag `--input` replace the predefined folder structure containing the svs files. 
 
