@@ -1,5 +1,4 @@
-#  conda env create -f environment.yml
-
+#  conda env create -f environment.ymls
 name: histopreprocess
 channels:
   - anaconda 
