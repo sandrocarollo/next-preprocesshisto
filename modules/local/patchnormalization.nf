@@ -1,5 +1,8 @@
 process PATCHNORMALIZATION{
     
+    profile 'process_high'
+    conda '/home/girotto/.conda/envs/histopreprocess/'
+    
     publishDir "${params.outdir}", mode: 'copy'
 
     input:
