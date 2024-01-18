@@ -1,6 +1,6 @@
 ## Introduction
 
-**next-preprocesshisto** is a best-practice histopathology analysis pipeline designed to process and extract patches from H&E slides provided as input. The slides will go through a RGB thresholding and edge detection to isolate the tissue before beign tessellated into small patches. Subsequently, these patches will be normalized for downstream analysis.
+**next-preprocesshisto** is a best-practice histopathology analysis pipeline designed to process and extract patches from H&E slides provided as input. The slides will go through a RGB thresholding and edge detection to isolate the tissue before being tessellated into small patches. Subsequently, these patches will be normalized for downstream analysis.
 
 The pipeline is built using [Nextflow](https://www.nextflow.io), a workflow tool to run tasks across multiple compute infrastructures in a very portable manner. The [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl2.html) implementation of this pipeline uses one container per process which makes it much easier to maintain and update software dependencies.
 
@@ -8,14 +8,14 @@ The pipeline is built using [Nextflow](https://www.nextflow.io), a workflow tool
 ## Pipeline summary
 
 * **Input:** Read folder with medical images in svs format.
-* **Processing:** The fist module utilize RGB thresholding and Canny edge detection to isolate the tissue and then to extract patches for further analysis. Furthermore, it performs a check, discarding patches that are almost completely white, i.e. that have a minimal region of tissue, therefore negligible. The second module deals with the normalization of the extracted patches. It is carried out through the Macenko method.
+* **Processing:** The first module utilize RGB thresholding and Canny edge detection to isolate the tissue and then to extract patches for further analysis. Furthermore, it performs a check, discarding patches that are almost completely white, i.e., that have a minimal region of tissue, therefore negligible. The second module deals with the normalization of the extracted patches. It is carried out through the Macenko method.
 * **Output:** Tissue-relevant patches are saved in folder `patches`. Optionally, the pipeline saves the patches not interested by the tissue, as well as the image reconstruction, in folders `discard` and `reconstruction`, respectively. On the other hand, normalized patches are saved in the folder `normalized_patches`.
 
 ## Quick Start
 
 1. Install [`Nextflow`](https://www.nextflow.io/docs/latest/getstarted.html#installation) (`>=22.10.1`)
 
-2. Download the pipeline and cloning the repository
+2. Download the pipeline and clone the repository
 
    ```bash
    git clone git@github.com:sandrocarollo/next-preprocesshisto.git
