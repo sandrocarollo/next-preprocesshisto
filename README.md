@@ -8,8 +8,8 @@ The pipeline is built using [Nextflow](https://www.nextflow.io), a workflow tool
 ## Pipeline summary
 
 * **Input:** Read folder with medical images in svs format.
-* **Processing:** The fist module utilize RGB thresholding and Canny edge detection to isolate the tissue and then to extract patches for further analysis. Furthermore, it performs a check, discarding patches that are almost completely white, i.e. that have a minimal region of tissue, therefore negligible. The second Module 
-* **Output:** Tissue-relevant patches are saved in folder `patches`. Optionally, the pipeline saves the patches not interested by the tissue, as well as the image reconstruction, in folders `discard` and `reconstruction`, respectively.
+* **Processing:** The fist module utilize RGB thresholding and Canny edge detection to isolate the tissue and then to extract patches for further analysis. Furthermore, it performs a check, discarding patches that are almost completely white, i.e. that have a minimal region of tissue, therefore negligible. The second module deals with the normalization of the extracted patches. It is carried out through the Macenko method.
+* **Output:** Tissue-relevant patches are saved in folder `patches`. Optionally, the pipeline saves the patches not interested by the tissue, as well as the image reconstruction, in folders `discard` and `reconstruction`, respectively. On the other hand, normalized patches are saved in the folder `normalized_patches`.
 
 ## Quick Start
 
