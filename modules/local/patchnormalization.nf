@@ -1,6 +1,9 @@
 process PATCHNORMALIZATION{
     
-    publishDir "${params.outdir_norm}", mode: 'copy'
+    label 'process_high'
+    conda '/home/girotto/.conda/envs/histopreprocess/'
+    
+    publishDir "${params.outdir}", mode: 'copy'
 
     input:
         path patches

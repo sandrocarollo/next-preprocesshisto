@@ -3,9 +3,7 @@ results
 work
 .command.*
 *.exitcode
-*.jpg
 pipeline_*
 execution_*
 *.svs
-normalized_result 
 bin/__pycache__
