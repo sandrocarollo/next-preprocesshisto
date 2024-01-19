@@ -1,10 +1,9 @@
 process PATCHEXTRACTION{
 
     label 'process_high'
+    conda "/home/carollo/.conda/envs/histopreprocess/"
 
     publishDir "${params.outdir}", mode: 'copy'
-
-    conda "/home/girotto/.conda/envs/histopreprocess/"
 
     input:
         path image
@@ -22,5 +21,5 @@ process PATCHEXTRACTION{
         --PatchPixelSize ${params.patch_size} \\
         ${saving_choosen}
     """
-    
+
 }

@@ -1,13 +1,13 @@
 process PATCHNORMALIZATION{
-    
+
     label 'process_high'
-    conda '/home/girotto/.conda/envs/histopreprocess/'
-    
+    conda '/home/carollo/.conda/envs/histopreprocess/'
+
     publishDir "${params.outdir}", mode: 'copy'
 
     input:
         path patches
-        
+
     output:
         path "**"
 
@@ -16,5 +16,5 @@ process PATCHNORMALIZATION{
     normalization.py \\
         -ip ${patches}
     """
-    
+
 }
