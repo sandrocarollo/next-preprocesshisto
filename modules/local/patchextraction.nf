@@ -1,7 +1,10 @@
 process PATCHEXTRACTION{
 
+    label 'process_high'
+
     publishDir "${params.outdir}", mode: 'copy'
-    def saving_choosen = params.full_saving ? '--apply_FullSaving' : ''
+
+    conda "/home/girotto/.conda/envs/histopreprocess/"
 
     input:
         path image
@@ -10,6 +13,7 @@ process PATCHEXTRACTION{
         path "**"
 
     script:
+    def saving_choosen = params.full_saving ? '--apply_FullSaving' : ''
     """
     histopreprocess.py \\
         --input_image ${image} \\
