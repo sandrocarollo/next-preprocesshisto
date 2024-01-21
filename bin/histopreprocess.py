@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
 import argparse
-import cv2  
-import numpy as np  
+import cv2
+import numpy as np
 import openslide
 import os
 from PIL import Image
@@ -16,14 +16,14 @@ def main():
     # size thumbnail
     thumb_size = (np.array(slide.dimensions)/patch_size_px).astype(int)
     # creating thumbnail of the image
-    image_thumb = slide.get_thumbnail(thumb_size) 
+    image_thumb = slide.get_thumbnail(thumb_size)
 
     # ----- RGB Thresholding -----
     # Conversion of the image
     image = np.array(image_thumb)
     image = cv2.cvtColor(image, cv2.COLOR_RGBA2RGB)
 
-    # Separation on the image in three color channels 
+    # Separation on the image in three color channels
     blue_channel = image[:, :, 0]
     green_channel = image[:, :, 1]
     red_channel = image[:, :, 2]
@@ -38,7 +38,7 @@ def main():
     peak_green = hist_green.argmax()
     peak_red = hist_red.argmax()
 
-    # Mask creation and application of it 
+    # Mask creation and application of it
     lower_threshold = np.array([20, 50, 20], dtype=np.uint8)
     upper_threshold = np.array([peak_red-8, peak_green-8, peak_blue-8], dtype=np.uint8)
 
@@ -48,7 +48,7 @@ def main():
     # Coordinates of the patches: the dimension is amount of patches * (x,y) coords of tiles
     coords = np.flip(np.transpose(mask.nonzero()), 1) * patch_size_px
 
-    # Dictionaries to store the patches with coordinates as keys, bboth saved and discareded patches 
+    # Dictionaries to store the patches with coordinates as keys, bboth saved and discareded patches
     patches_saved = {}
     patches_discarded = {}
 
@@ -56,37 +56,37 @@ def main():
         c = c.astype(int)
         # Patch creation
         patch = slide.read_region(c, 0, (int(patch_size_px),)*2)
-        # Converting patch to gray scale 
+        # Converting patch to gray scale
         patch_greyscale = patch.convert('L')
         patch_gray_array = np.array(patch_greyscale)
-        
+
         # ----- CANNY EDGE DETECTION -----
         edge = cv2.Canny(patch_gray_array, CannyRange[0], CannyRange[1])
-        
+
         # Normalization of edge
         edge = (edge / np.max(edge) if np.max(edge) != 0 else 0)
         # Calculation of the edge's percentage
-        edge = ((np.sum(np.sum(edge)) / (patch_size_px * patch_size_px)) * 100) 
-        
+        edge = ((np.sum(np.sum(edge)) / (patch_size_px * patch_size_px)) * 100)
+
         # Conversion patch
         patch = patch.convert('RGB')
         c_tuple = tuple(c)
-        
-        # Removal of useless patches 
+
+        # Removal of useless patches
         if(edge < 2.):
             patches_discarded[c_tuple] = patch
             continue
-        # Saving of useful patches     
+        # Saving of useful patches
         patches_saved[c_tuple] = patch
 
-    # Process to delete patches with too less tissue 
+    # Process to delete patches with too less tissue
     keys_to_delete = []
 
     for position, patch in patches_saved.items():
-        # Convert patch 
+        # Convert patch
         patch_gray = patch.convert('L')
         patch_gray_array = np.array(patch_gray)
-        
+
         # Proportion of whitish pixels
         white_pixels = np.sum(patch_gray_array > 200)
         total_pixels = patch_size_px * patch_size_px
@@ -96,13 +96,13 @@ def main():
         if proportion_white > white_threshold:
             patches_discarded[position] = patch
             keys_to_delete.append(position)  # Add key for deletion later
-            
-    # Remove patches 
+
+    # Remove patches
     for key in keys_to_delete:
         del patches_saved[key]
 
     # ----- Reconstruction -----
-    # Find the maximum x and y coordinates to determine canvas size 
+    # Find the maximum x and y coordinates to determine canvas size
     max_x = max(coord[0] for coord in patches_saved.keys())
     max_y = max(coord[1] for coord in patches_saved.keys())
 
@@ -111,14 +111,14 @@ def main():
 
     # Iterate through saved patches and place them on the canvas
     for coord, patch in patches_saved.items():
-        x_coord, y_coord = coord  
+        x_coord, y_coord = coord
         reconstructed_image[y_coord:y_coord + patch_size_px, x_coord:x_coord + patch_size_px] = np.array(patch)
 
     # ----- Saving Process -----
-    # Extracting name for main directory 
+    # Extracting name for main directory
     extracted_text = file_path[:file_path.rfind('.')]
 
-    # Main directory 
+    # Main directory
     outPath = './tiles'
     main_directory = os.path.join(outPath, extracted_text)
     os.makedirs(main_directory, exist_ok=True)
@@ -130,20 +130,22 @@ def main():
             subdirectory_path = os.path.join(main_directory, folder)
             os.makedirs(subdirectory_path, exist_ok=True)
 
-    # Save patches 
+    # Save patches
     for position, patch in patches_saved.items():
-        filename = "{}_{}".format(extracted_text, position)
+        x_coord, y_coord = position
+        filename = "{}_({},{})".format(extracted_text, x_coord, y_coord)
         patch.save(os.path.join(main_directory, filename + ".jpg"))
 
 
-    # Save discarded patches in the discard folder 
+    # Save discarded patches in the discard folder
     if full_saving:
         for position, patch in patches_discarded.items():
-            filename = "{}_{}".format(extracted_text, position)
+            x_coord, y_coord = position
+            filename = "{}_({},{})".format(extracted_text, x_coord, y_coord)
             patch.save(os.path.join(main_directory, 'discard', filename + ".jpg"))
 
 
-        # Save the reconstructed image in the reconstruction folder 
+        # Save the reconstructed image in the reconstruction folder
         reconstructed_image = Image.fromarray(reconstructed_image)
         reconstructed_image.save(os.path.join(main_directory, 'reconstruction', extracted_text + ".jpg"))
 
@@ -151,7 +153,7 @@ def main():
 if __name__ == "__main__":
   parser = argparse.ArgumentParser(description='Histo Pre-processing',
                     formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-  parser.add_argument("-1", "--input_image", 
+  parser.add_argument("-1", "--input_image",
                      help="Path of the input image file",
                      default="/data/datasets/gdc/diagnostic_slides/COAD/70012428-8df8-4eb2-8d28-7d0b2a88d1d7/TCGA-A6-3810-01Z-00-DX1.2940ca70-013a-4bc3-ad6a-cf4d9ffa77ce.svs",
                      required=False)
