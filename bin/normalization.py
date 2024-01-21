@@ -8,10 +8,10 @@ from PIL import Image
 import norm_Macenko
 
 def Normalization(inputPath: Path, sampleImagePath: Path) -> None:
-    
-    # Fitting of the normalizer to the target image 
+
+    # Fitting of the normalizer to the target image
     target = cv2.imread(sampleImagePath)
-    target = cv2.cvtColor(target, cv2.COLOR_BGR2RGB)    
+    target = cv2.cvtColor(target, cv2.COLOR_BGR2RGB)
     normalizer = norm_Macenko.Normalizer()
     normalizer.fit(target)
 
@@ -20,21 +20,21 @@ def Normalization(inputPath: Path, sampleImagePath: Path) -> None:
         img = cv2.imread(str(patch))
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
-        # Patches' normalization 
+        # Patches' normalization
         nor_img = normalizer.transform(img)
         nor_img = cv2.cvtColor(nor_img, cv2.COLOR_RGB2BGR)
 
-        # Extracting name for main directory 
-        extracted_text = patch.name[:(str(patch).find('('))]
+        # Extracting name for main directory
+        extracted_text = patch.name[:(str(patch).find('_('))]
 
-        # Main directory 
+        # Main directory
         outPath = './normalized_patches'
         main_directory = os.path.join(outPath, extracted_text)
         os.makedirs(main_directory, exist_ok=True)
 
-        # Saving 
+        # Saving
         nor_img = Image.fromarray(nor_img)
-        nor_img.save(os.path.join(main_directory,patch))    
+        nor_img.save(os.path.join(main_directory,patch))
 
 if __name__ == '__main__':
     # Parsing all arguments from the command line
@@ -45,4 +45,4 @@ if __name__ == '__main__':
 
     # Calling the Normalization function with defined parameters
     Normalization(  args.inputPath,
-                    args.sampleImagePath if args.sampleImagePath != None else './bin/normalization_template.jpg')
+                    args.sampleImagePath if args.sampleImagePath != None else '../../../bin/normalization_template.jpg')
