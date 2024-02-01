@@ -1,0 +1,9 @@
+.nextflow*
+results 
+work
+.command.*
+*.exitcode
+pipeline_*
+execution_*
+*.svs
+bin/__pycache__
