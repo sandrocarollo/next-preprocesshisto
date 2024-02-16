@@ -14,7 +14,8 @@ process PATCHNORMALIZATION{
     script:
     """
     normalization.py \\
-        -ip ${patches}
+        -ip ${patches} \\
+        -nt ${params.num_threads}
     """
 
 }
