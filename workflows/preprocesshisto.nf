@@ -40,7 +40,7 @@ workflow PREPROCESSHISTO {
     // MODULE: Run patchextraction
     //
     PATCHEXTRACTION (
-        read_img
+        read_img.collect()
     )
 
     //
