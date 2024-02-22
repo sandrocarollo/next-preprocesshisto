@@ -4,7 +4,6 @@ import argparse
 import cv2
 from multiprocessing.dummy import Pool as ThreadPool
 import numpy as np
-import openslide
 from openslide import OpenSlide, PROPERTY_NAME_MPP_X
 import os
 from PIL import Image
@@ -12,7 +11,7 @@ from PIL import Image
 
 def main(file_path):
     # Import slide
-    slide = openslide.OpenSlide(file_path)
+    slide = OpenSlide(file_path)
 
     # ----- Scaling -----
     tile_size_px = 256/float(slide.properties[PROPERTY_NAME_MPP_X])
