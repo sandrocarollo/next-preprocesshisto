@@ -14,7 +14,10 @@ def main(file_path):
     slide = OpenSlide(file_path)
 
     # ----- Scaling -----
-    tile_size_px = 256/float(slide.properties[PROPERTY_NAME_MPP_X])
+    try:
+        tile_size_px = 256/float(slide.properties[PROPERTY_NAME_MPP_X])
+    except:
+        tile_size_px = 224
     # size thumbnail
     thumb_size = (np.array(slide.dimensions)/tile_size_px).astype(int)
     # creating thumbnail of the image
