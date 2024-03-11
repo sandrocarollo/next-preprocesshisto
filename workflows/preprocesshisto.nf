@@ -24,6 +24,7 @@ read_img = Channel.fromPath("${params.input}/*.{${params.images_paths}}").ifEmpt
 
 include { PATCHEXTRACTION } from '../modules/local/patchextraction.nf'
 include { PATCHNORMALIZATION } from '../modules/local/patchnormalization.nf'
+include { FEATURESEXTRACTION } from '../modules/local/featuresextraction.nf'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -48,6 +49,13 @@ workflow PREPROCESSHISTO {
     //
     PATCHNORMALIZATION (
         PATCHEXTRACTION.out
+    )
+
+    //
+    // MODULE: Run featuresextraction
+    //
+    FEATURESEXTRACTION (
+        PATCHNORMALIZATION.out.collectFile()
     )
 
 }
