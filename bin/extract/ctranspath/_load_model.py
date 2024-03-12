@@ -5,8 +5,8 @@ from pathlib import Path
 import torch
 import torch.nn as nn
 
-from ..extract import extract_features_
-from .swin_transformer import swin_tiny_patch4_window7_224, ConvStem
+from extract import extract_features_
+from swin_transformer import swin_tiny_patch4_window7_224, ConvStem
 
 
 def extract_ctranspath_features_(*slide_tile_paths: Path, checkpoint_path: str, **kwargs):
