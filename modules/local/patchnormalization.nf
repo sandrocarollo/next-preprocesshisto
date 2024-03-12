@@ -1,6 +1,6 @@
 process PATCHNORMALIZATION{
 
-    label 'process_high'
+    label 'process_medium'
     conda '/home/carollo/.conda/envs/histopreprocess/'
 
     publishDir "${params.outdir}", mode: 'copy'
@@ -9,7 +9,7 @@ process PATCHNORMALIZATION{
         path patches
 
     output:
-        path "**"
+        path "normalized_patches/*"
 
     script:
     """

@@ -55,7 +55,7 @@ workflow PREPROCESSHISTO {
     // MODULE: Run featuresextraction
     //
     FEATURESEXTRACTION (
-        PATCHNORMALIZATION.out.collectFile()
+        PATCHNORMALIZATION.out.flatten()
     )
 
 }
