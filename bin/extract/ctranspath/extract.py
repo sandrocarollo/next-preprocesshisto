@@ -12,7 +12,7 @@ import numpy as np
 from tqdm import tqdm
 import h5py
 
-from . import __version__
+#from . import __version__
 
 
 __all__ = ['extract_features_']
@@ -83,7 +83,8 @@ def extract_features_(
     # Main directory output
     outdir = Path(outdir)
     outdir.mkdir(exist_ok=True, parents=True)
-    extractor_string = f'marugoto-extract-v{__version__}_{model_name}'
+    # extractor_string = f'marugoto-extract-v{__version__}_{model_name}'
+    extractor_string = f'marugoto-extract_{model_name}'
     with open(outdir/'info.json', 'w') as f:
         json.dump({'extractor': extractor_string,
                   'augmented_repetitions': augmented_repetitions}, f)
