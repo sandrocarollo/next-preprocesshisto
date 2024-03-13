@@ -6,6 +6,8 @@ channels:
   - anaconda 
   - conda-forge 
   - defaults 
+  - pytorch
+  - nvidia
 dependencies:
   - imageio
   - numpy
@@ -13,7 +15,14 @@ dependencies:
   - openslide-python 
   - Pillow==9.2.0
   - pip
+  - fire
+  - pytorch==2.0.1
+  - torchvision==0.15.2
+  - torchaudio==2.0.2
+  - pytorch-cuda=11.7
   - pip:
     - opencv-python
     - spams
+    - h5py
+    - tqdm
 

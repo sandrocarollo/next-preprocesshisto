@@ -7,3 +7,8 @@ pipeline_*
 execution_*
 *.svs
 bin/__pycache__
+bin/extract/__pycache__
+bin/extract/__init__.pyc
+bin/extract/ctranspath/__pycache__
+bin/extract/ctranspath/__init__.pyc
+bin/extract/ctranspath/ctranspath.pth

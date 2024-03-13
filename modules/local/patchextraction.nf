@@ -1,6 +1,6 @@
 process PATCHEXTRACTION{
 
-    label 'process_high'
+    label 'process_medium'
     conda "/home/carollo/.conda/envs/histopreprocess/"
 
     publishDir "${params.outdir}", mode: 'copy'
