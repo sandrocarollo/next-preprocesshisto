@@ -2,19 +2,24 @@
 
 import argparse
 import cv2
+from multiprocessing.dummy import Pool as ThreadPool
 import numpy as np
-import openslide
+from openslide import OpenSlide, PROPERTY_NAME_MPP_X
 import os
 from PIL import Image
 
 
-def main():
+def main(file_path):
     # Import slide
-    slide = openslide.OpenSlide(file_path)
+    slide = OpenSlide(file_path)
 
     # ----- Scaling -----
+    try:
+        tile_size_px = 256/float(slide.properties[PROPERTY_NAME_MPP_X])
+    except:
+        tile_size_px = 224
     # size thumbnail
-    thumb_size = (np.array(slide.dimensions)/patch_size_px).astype(int)
+    thumb_size = (np.array(slide.dimensions)/tile_size_px).astype(int)
     # creating thumbnail of the image
     image_thumb = slide.get_thumbnail(thumb_size)
 
@@ -46,7 +51,7 @@ def main():
 
     # ----- Tassellation & Cleaning -----
     # Coordinates of the patches: the dimension is amount of patches * (x,y) coords of tiles
-    coords = np.flip(np.transpose(mask.nonzero()), 1) * patch_size_px
+    coords = np.flip(np.transpose(mask.nonzero()), 1) * tile_size_px
 
     # Dictionaries to store the patches with coordinates as keys, bboth saved and discareded patches
     patches_saved = {}
@@ -55,7 +60,7 @@ def main():
     for c in coords:
         c = c.astype(int)
         # Patch creation
-        patch = slide.read_region(c, 0, (int(patch_size_px),)*2)
+        patch = slide.read_region(c, 0, (int(tile_size_px),)*2)
         # Converting patch to gray scale
         patch_greyscale = patch.convert('L')
         patch_gray_array = np.array(patch_greyscale)
@@ -66,10 +71,10 @@ def main():
         # Normalization of edge
         edge = (edge / np.max(edge) if np.max(edge) != 0 else 0)
         # Calculation of the edge's percentage
-        edge = ((np.sum(np.sum(edge)) / (patch_size_px * patch_size_px)) * 100)
+        edge = ((np.sum(np.sum(edge)) / (patch_gray_array.shape[0] * patch_gray_array.shape[1])) * 100) 
 
         # Conversion patch
-        patch = patch.convert('RGB')
+        patch = patch.convert('RGB').resize((patch_size_px,)*2)
         c_tuple = tuple(c)
 
         # Removal of useless patches
@@ -153,7 +158,7 @@ def main():
 if __name__ == "__main__":
   parser = argparse.ArgumentParser(description='Histo Pre-processing',
                     formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-  parser.add_argument("-1", "--input_image",
+  parser.add_argument("-1", "--input_image", nargs='*',
                      help="Path of the input image file",
                      default="/data/datasets/gdc/diagnostic_slides/COAD/70012428-8df8-4eb2-8d28-7d0b2a88d1d7/TCGA-A6-3810-01Z-00-DX1.2940ca70-013a-4bc3-ad6a-cf4d9ffa77ce.svs",
                      required=False)
@@ -172,10 +177,19 @@ if __name__ == "__main__":
   parser.add_argument("-5","--apply_FullSaving",  action='store_true',
                      help="Activate the full saving process",
                      required=False)
+  parser.add_argument("-6", "--threads", type=int,
+                      help="Number of threads used for processing, 2 by default",
+                      default=2,
+                      required=False)
   args = parser.parse_args()
-  file_path = args.input_image
+  folder_path = args.input_image
   CannyRange = args.CannyValues
   white_threshold = args.CleaningThreshold
   patch_size_px = args.PatchPixelSize
   full_saving = args.apply_FullSaving
-  main()
+  num_threads = args.threads
+
+pool = ThreadPool(num_threads)
+pool.map(main, folder_path)
+pool.close()
+pool.join()
