@@ -15,6 +15,8 @@ process FEATURESEXTRACTION{
     """
     python3 ${baseDir}/bin/extract/ctranspath \
         --checkpoint-path ${baseDir}/bin/extract/ctranspath/ctranspath.pth \
+        --nt ${params.num_threads} \
+        --device ${params.device} \
         ${norm_patches}
     """
 

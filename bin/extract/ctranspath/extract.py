@@ -52,6 +52,7 @@ def extract_features_(
         slide_tile_paths: Sequence[Path], 
         outdir: Path = './extracted_features', 
         augmented_repetitions: int = 0,
+        nt: int = 10,
 ) -> None:
     """Extracts features from slide tiles.
 
@@ -62,6 +63,7 @@ def extract_features_(
         augmented_repetitions:  How many additional iterations over the
             dataset with augmentation should be performed.  0 means that
             only one, non-augmentation iteration will be done.
+        nt: The number of threads to use
     """
     normal_transform = transforms.Compose([
         transforms.Resize(224),
@@ -99,7 +101,7 @@ def extract_features_(
             print(f'No tiles in {slide_tile_path}.  Skipping...')
             continue
 
-        treads = 20
+        treads = nt
         unaugmented_ds = SlideTileDataset(slide_tile_path, normal_transform)
         # augmented_ds = SlideTileDataset(slide_tile_path, augmenting_transform,
         #                                 repetitions=augmented_repetitions)

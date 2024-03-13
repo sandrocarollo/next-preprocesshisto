@@ -9,7 +9,10 @@ from extract import extract_features_
 from swin_transformer import swin_tiny_patch4_window7_224, ConvStem
 
 
-def extract_ctranspath_features_(*slide_tile_paths: Path, checkpoint_path: str, **kwargs):
+def extract_ctranspath_features_(*slide_tile_paths: Path,
+                                checkpoint_path: str,
+                                device : str,
+                                **kwargs):
     """Extracts features from slide tiles.
 
     Args:
@@ -27,7 +30,7 @@ def extract_ctranspath_features_(*slide_tile_paths: Path, checkpoint_path: str, 
 
     assert sha256.hexdigest() == '7c998680060c8743551a412583fac689db43cec07053b72dfec6dcd810113539'
 
-    device = 'cpu'
+    # device = 'cpu'
     model = swin_tiny_patch4_window7_224(embed_layer=ConvStem, pretrained=False)
     model.head = nn.Identity()
 
