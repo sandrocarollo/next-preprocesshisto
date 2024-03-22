@@ -106,23 +106,10 @@ def main(file_path):
     for key in keys_to_delete:
         del patches_saved[key]
 
-    # ----- Reconstruction -----
-    # Find the maximum x and y coordinates to determine canvas size
-    max_x = max(coord[0] for coord in patches_saved.keys())
-    max_y = max(coord[1] for coord in patches_saved.keys())
-
-    # Empty canvas to reconstruct the image
-    reconstructed_image = np.zeros((max_y + patch_size_px, max_x + patch_size_px, 3), dtype=np.uint8)
-
-    # Iterate through saved patches and place them on the canvas
-    for coord, patch in patches_saved.items():
-        x_coord, y_coord = coord
-        reconstructed_image[y_coord:y_coord + patch_size_px, x_coord:x_coord + patch_size_px] = np.array(patch)
-
-    # ----- Saving Process -----
     # Extracting name for main directory
     extracted_text = file_path[:file_path.rfind('.')]
 
+    # ----- Saving Process -----
     # Main directory
     outPath = './tiles'
     main_directory = os.path.join(outPath, extracted_text)
@@ -134,13 +121,25 @@ def main(file_path):
         for folder in subdirectories:
             subdirectory_path = os.path.join(main_directory, folder)
             os.makedirs(subdirectory_path, exist_ok=True)
+        
+        # ----- Reconstruction -----
+        # Find the maximum x and y coordinates to determine canvas size
+        max_x = max(coord[0] for coord in patches_saved.keys())
+        max_y = max(coord[1] for coord in patches_saved.keys())
+
+        # Empty canvas to reconstruct the image
+        reconstructed_image = np.zeros((max_y + patch_size_px, max_x + patch_size_px, 3), dtype=np.uint8)
+
+        # Iterate through saved patches and place them on the canvas
+        for coord, patch in patches_saved.items():
+            x_coord, y_coord = coord
+            reconstructed_image[y_coord:y_coord + patch_size_px, x_coord:x_coord + patch_size_px] = np.array(patch)
 
     # Save patches
     for position, patch in patches_saved.items():
         x_coord, y_coord = position
         filename = "{}_({},{})".format(extracted_text, x_coord, y_coord)
         patch.save(os.path.join(main_directory, filename + ".jpg"))
-
 
     # Save discarded patches in the discard folder
     if full_saving:
@@ -153,6 +152,7 @@ def main(file_path):
         # Save the reconstructed image in the reconstruction folder
         reconstructed_image = Image.fromarray(reconstructed_image)
         reconstructed_image.save(os.path.join(main_directory, 'reconstruction', extracted_text + ".jpg"))
+
 
 
 if __name__ == "__main__":
@@ -174,8 +174,8 @@ if __name__ == "__main__":
                      help="Patch size in pixels",
                      default=512,
                      required=False)
-  parser.add_argument("-5","--apply_FullSaving",  action='store_true',
-                     help="Activate the full saving process",
+  parser.add_argument("-5","--apply_FullSaving", action='store_true',
+                     help="Activate the full saving process: patches, discard patches and the image reconstruction",
                      required=False)
   parser.add_argument("-6", "--threads", type=int,
                       help="Number of threads used for processing, 2 by default",
