@@ -1,7 +1,7 @@
 process FEATURESEXTRACTION{
 
     label 'process_medium'
-    conda '/home/carollo/.conda/envs/histopreprocess/'
+    conda '/home/girotto/.conda/envs/histopreprocess/'
 
     publishDir "${params.outdir}", mode: 'copy'
 
@@ -18,6 +18,8 @@ process FEATURESEXTRACTION{
         --nt ${params.num_threads} \
         --device ${params.device} \
         ${norm_patches}
+
+    rm -r */*.jpg
     """
 
 }

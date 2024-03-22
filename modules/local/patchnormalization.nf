@@ -1,9 +1,9 @@
 process PATCHNORMALIZATION{
 
     label 'process_medium'
-    conda '/home/carollo/.conda/envs/histopreprocess/'
+    conda '/home/girotto/.conda/envs/histopreprocess/'
 
-    publishDir "${params.outdir}", mode: 'copy'
+    publishDir "${params.outdir}", enabled:params.norm_patches_saving, mode: 'copy'
 
     input:
         path patches
@@ -13,9 +13,11 @@ process PATCHNORMALIZATION{
 
     script:
     """
-    normalization.py \\
-        -ip ${patches} \\
-        -nt ${params.num_threads}
+    normalization.py \
+        --inputPath ${patches} \
+        --threads ${params.num_threads}
+
+    rm *.jpg
     """
 
 }
