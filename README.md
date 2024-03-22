@@ -57,7 +57,8 @@ The pipeline is built using [Nextflow](https://www.nextflow.io), a workflow tool
    `--patch_size` to set the size of patches [ default value: 512 ]
    `--extr_patches_saving` to save in the outdir the extracted patches interested by the tissue (true) [ default value: false ]
    `--all_extr_patches_saving` to save in the outdir, in addition to the extracted patches interested by the tissue, also the discarded patches and image reconstruction (true) [ default value: false ]
-   `--full_saving` to save in the outdir the normalized patches (true) [ default value: false ]
+   `--norm_patches_saving` to save in the outdir the normalized patches (true) [ default value: false ]
+   `--num_threads` to set the number of treads for the various modules  [ default value: 10 ]
    `--outdir` to set the folder where the pipeline output is to be obtained [ default value: './results' ]
 
 
