@@ -29,14 +29,14 @@ def Normalization(inputPath: Path, sampleImagePath: Path, num_threads: int) -> N
         extracted_text = patch.name[:(str(patch).find('_('))]
 
         # Main directory
-        outPath = './normalized_patches'
+        outPath = "./normalized_patches"
         main_directory = os.path.join(outPath, extracted_text)
         os.makedirs(main_directory, exist_ok=True)
 
         # Saving
         nor_img = Image.fromarray(nor_img)
-        nor_img.save(os.path.join(main_directory,patch))  
-    
+        nor_img.save(os.path.join(main_directory,patch))
+        
     pool = ThreadPool(num_threads)
     pool.map(Norm_and_save_patches, inputPath)
     pool.close()
@@ -45,9 +45,18 @@ def Normalization(inputPath: Path, sampleImagePath: Path, num_threads: int) -> N
 if __name__ == '__main__':
     # Parsing all arguments from the command line
     parser = argparse.ArgumentParser()
-    parser.add_argument("-ip", "--inputPath", help="Input path of the to-be-normalised tiles", nargs='+', type=Path, required=True)
-    parser.add_argument("-si", "--sampleImagePath", help="Image used to determine the colour distribution, uses GitHub one by default", type=Path)
-    parser.add_argument("-nt", "--threads", help="Number of threads used for processing, 2 by default", type=int)
+    parser.add_argument("-1", "--inputPath", 
+                        help="Input path of the to-be-normalised tiles", 
+                        nargs='+', type=Path,
+                        required=True)
+    parser.add_argument("-2", "--sampleImagePath", 
+                        help="Image used to determine the colour distribution, uses GitHub one by default", 
+                        type=Path,
+                        required=False)
+    parser.add_argument("-3", "--threads", 
+                        help="Number of threads used for processing, 2 by default", 
+                        type=int,
+                        required=False)
     args = parser.parse_args()
 
     # Calling the Normalization function with defined parameters
